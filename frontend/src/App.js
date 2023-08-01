@@ -1,17 +1,19 @@
-// Import external modules
+// Import Externall modules
 import {
   createBrowserRouter,
   RouterProvider,
   Outlet,
   Navigate,
 } from "react-router-dom";
+import { useContext } from "react";
 
 // Import internal modules
 import "./style.css";
 import Login from "./pages/login/Login.jsx";
-import Register from "./pages/register/Register";
-import Home from "./pages/home/Home";
-import Formdetails from "./pages/formDetails/Formdetails";
+import Register from "./pages/register/Register.jsx";
+import Home from "./pages/home/Home.jsx";
+import Formdetails from "./pages/formDetails/Formdetails.jsx";
+import { AuthContext } from "../src/context/authContext";
 
 // Import reusable components
 import Navbar from "./components/navbar/Navbar.jsx";
@@ -35,14 +37,24 @@ function App() {
   };
 
   // Var only for testing purpose - testing Protected Routes
-  const currentUser = true;
+  //const currentUser = true;
+
+  const { currentUser } = useContext(AuthContext);
 
   // Protect some routers - example: if user is not logged in or registered redirect to login or register page
   // Children are protected routes
-  // In our case Protected Routes are Home Component and Form detail page
+  // In our case Protected Routes are Home Component, Form detail page and Login page after user is logged in
   const ProtectedRoute = ({ children }) => {
     if (!currentUser) {
       return <Navigate to="/login" />;
+    }
+
+    return children;
+  };
+
+  const ProtectedLogin = ({ children }) => {
+    if (currentUser) {
+      return <Navigate to="/" />;
     }
 
     return children;
@@ -66,6 +78,14 @@ function App() {
           element: <Formdetails />,
         },
       ],
+    },
+    {
+      path: "/login",
+      element: (
+        <ProtectedLogin>
+          <Login />
+        </ProtectedLogin>
+      ),
     },
     {
       path: "/login",
