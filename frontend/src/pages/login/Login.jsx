@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 
 // Import Internal modules
 import "./login.css";
+import Validation from "./loginValidation.js"; 
 import { AuthContext } from "../../context/authContext";
 export default function Login() {
 
@@ -16,6 +17,9 @@ export default function Login() {
   
   // Handle errors during login
   const [err, setError] = useState(null);
+
+  //Handle errors before submiting
+  const [errors, setErrors] = useState({});
 
   // Use navigate hook to after succesufull login redirect to home page
   const navigate = useNavigate();
@@ -31,6 +35,11 @@ const { login } = useContext(AuthContext);
 
 const handleLogin = async (e) => {
   e.preventDefault();
+
+  // Validate inputs
+  setErrors(Validation(inputs));
+
+
   try{
     await login(inputs);
     // After succesufull login navigate to home page
