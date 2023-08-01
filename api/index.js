@@ -14,11 +14,12 @@ import authRoutes from "./routes/auth.js";
 const app = express();
 
 // Create routes middlewares
-/*
+
+// Allow access to client side
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
   next();
-});*/
+});
 app.use(express.json()); // Allow us to parse data to json object
 
 app.use(

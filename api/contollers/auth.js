@@ -49,7 +49,7 @@ export const login = (req, res) => {
     );
 
     if (!checkPassword)
-      return res.status(400).json("Ouups, wrong password or username");
+      return res.status(400).json("Ouups, wrong password or email");
 
     // Create JWT
     // Used this token after user is logged in
