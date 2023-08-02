@@ -7,7 +7,7 @@ import cors from "cors";
 
 // Import routes
 import userRoutes from "./routes/users.js";
-//import formRoutes from "./routes/forms.js";
+import formRoutes from "./routes/forms.js";
 import authRoutes from "./routes/auth.js";
 
 // Create server object
@@ -31,7 +31,7 @@ app.use(
 app.use(cookieParser());
 
 app.use("/api/users", userRoutes);
-//app.use("/api/forms", formRoutes);
+app.use("/api/forms", formRoutes);
 app.use("/api/auth", authRoutes);
 
 app.listen(8800, () => {

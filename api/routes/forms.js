@@ -1,5 +1,5 @@
 // Default module for controlling forms endpoint
-/*
+
 // import Express module
 import express from "express";
 
@@ -14,5 +14,3 @@ const router = express.Router();
 router.get("/", getForms);
 
 export default router;
-
-*/
