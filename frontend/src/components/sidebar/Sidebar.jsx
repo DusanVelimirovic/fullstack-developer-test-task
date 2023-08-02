@@ -1,15 +1,43 @@
 // Import external modules
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
+import axios from "axios";
 
 // Import internal modules
 import "./sidebar.scss";
 
 
 
+
 const Sidebar = () => {
+
+  // Use navigate hook
+  // After logout process redirect to register page
+  const navigate = useNavigate();
+
+let user = JSON.parse(localStorage.getItem("user"));
+console.log(user);
+
+
+  // Handle logout process
+  const handleLogout = (e) => {
+
+    localStorage.clear();
+
+    axios.post("http://localhost:8800/api/auth/logout", {}, {withCredentials:true})
+      .then(res => {
+        navigate("/register");
+ 
+      }).catch(err => console.log(err));
+
+
+
+
+
+  }
+
+
 
   return (
     <div className="sidebar">
@@ -28,16 +56,12 @@ const Sidebar = () => {
           </li>
             </Link>
 
-            <Link to="/" style={{textDecoration:"none"}}></Link>    
-            <li>
-              <PersonOutlineIcon className="icon" />
-              <span>Users</span>
-            </li>
-            <Link />
-
           <li>
           <LogoutIcon className="icon"/>
-            <span>Logout</span>
+
+        <button onClick={handleLogout}>
+          Logout
+        </button>
           </li>
         </ul>
       </div>

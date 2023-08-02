@@ -2,10 +2,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 
+
 // Import Internal modules
 import "./login.css";
 import Validation from "../../validation.js";
-//import { AuthContext } from "../../context/authContext"; PRIVREMENO ONESPOSOBLJENO
+import { AuthContext } from "../../context/authContext";
 
 export default function Login() {
 
@@ -19,14 +20,13 @@ export default function Login() {
   // Handle errors during login (validation process)
   const [formErrors, setFormErrors] = useState({});
 
+  // Handle errors from server side
+  const [err, setError] = useState(null);
 
-  // PRIVREMENO ONESPOSOLJENO
+
+
   // Use navigate hook to after succesufull login redirect to home page
   const navigate = useNavigate();
-
-
-  // Validation function
-
 
 
 
@@ -37,26 +37,28 @@ export default function Login() {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value}));
   };
 
-    // PRIVREMENO ONESPOSOBLJENO
+
   // AuthContext return login()
-//const { login } = useContext(AuthContext);
+const { login } = useContext(AuthContext);
 
 const handleLogin = async (e) => {
   e.preventDefault();
 
-  // Pass all form values(inputs) on validation
+  // Pass all form values(inputs) for validation
   setFormErrors(Validation(inputs));
 
 
-  // PRIVREMENO ONESPOSOBLJENO
-/*
-  try{
-    await login(inputs);
-    // After succesufull login navigate to home page
-    navigate("/");
-  } catch (err){
-    setError(err.response.data);
-  }*/
+
+  if(formErrors.email === undefined && formErrors.password === undefined) {
+
+    try{
+      await login(inputs);
+      // After succesufull login navigate to home page
+      navigate("/");
+    } catch (err){
+      setError(err.response.data);
+    }
+}
 
   };
 
@@ -81,7 +83,7 @@ const handleLogin = async (e) => {
           name="password" onChange={handleChange}
         />
         <p> {formErrors.password} </p>
-        {/*{err && err}*/}
+        {err && err}
         <button onClick={handleLogin} className="loginButton">
           Login
         </button>

@@ -4,12 +4,12 @@ import Validation from "../../validation.js";
 
 // Import external Modules
 import { useState } from "react";
-//import { Link, useNavigate } from "react-router-dom";
-//import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
  
 export default function Register() {
 
-  // Collect data from input fields
+// Collect data from input fields
 const [inputs, setInputs] = useState({
   username: "",
   email: "",
@@ -21,14 +21,17 @@ const [inputs, setInputs] = useState({
 // Handle errors during register
 const [formErrors, setFormErrors] = useState({});
 
-  // Use navigate hook to after succesufull registration redirect to login page
-  //const navigate = useNavigate();
+// Handle errors from server side
+const [err, setError] = useState(null);
+
+// Use navigate hook to after succesufull registration redirect to login page
+const navigate = useNavigate();
 
 // Collect changes in form input fields
 // Pass data as callback to setInputs()
 const handleChange = (e) => {
   setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value}));
-  //console.log(inputs);
+
 };
 
 // Handle register request using axios
@@ -37,19 +40,29 @@ const handleClick = async e => {
 
   setFormErrors(Validation(inputs));
 
-  /*
-  try {
-    await axios.post("http://localhost:8800/api/auth/register", inputs);
-    navigate("/login");
+  const { confirmPassword, ...others } = inputs;
+
+
+  // Send API request only if formErrors are empty
+  
+
+  if(formErrors.username === undefined && formErrors.email === undefined && formErrors.password === undefined) {
+    try {
+      await axios.post("http://localhost:8800/api/auth/register", others);
+      navigate("/login");
+    }
+  
+    catch (err){
+     setError(err.response.data);
+    }
   }
 
-  catch (err){
-    setError(err.response.data);
-  }*/
+
+
+
+
 
 }
-
-
 
 
   return (
@@ -95,6 +108,7 @@ const handleClick = async e => {
         <button className="registerButton" onClick={handleClick}>
           Register
         </button>
+        <p> {err && err} </p>
       </form>
 
     </div>
