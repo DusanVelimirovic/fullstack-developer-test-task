@@ -70,11 +70,9 @@ export const login = (req, res) => {
 };
 
 export const logout = (req, res) => {
-  // After submiting logout clear cookie
   res
     .clearCookie("accessToken", {
-      secure: true,
-      sameSite: "none",
+      httpOnly: true,
     })
     .status(200)
     .json("User has been logged out.");
