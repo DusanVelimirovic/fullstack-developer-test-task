@@ -1,10 +1,11 @@
 // Import internal modules
 import "./register.css";
+import Validation from "../../validation.js";
 
 // Import external Modules
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+//import { Link, useNavigate } from "react-router-dom";
+//import axios from "axios";
  
 export default function Register() {
 
@@ -13,14 +14,15 @@ const [inputs, setInputs] = useState({
   username: "",
   email: "",
   password: "",
+  confirmPassword: "",
 });
 
 
 // Handle errors during register
-const [err, setError] = useState(null);
+const [formErrors, setFormErrors] = useState({});
 
   // Use navigate hook to after succesufull registration redirect to login page
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
 // Collect changes in form input fields
 // Pass data as callback to setInputs()
@@ -33,6 +35,9 @@ const handleChange = (e) => {
 const handleClick = async e => {
   e.preventDefault();
 
+  setFormErrors(Validation(inputs));
+
+  /*
   try {
     await axios.post("http://localhost:8800/api/auth/register", inputs);
     navigate("/login");
@@ -40,7 +45,7 @@ const handleClick = async e => {
 
   catch (err){
     setError(err.response.data);
-  }
+  }*/
 
 }
 
@@ -58,8 +63,8 @@ const handleClick = async e => {
           placeholder="Enter your username..."
           name="username"  
           onChange={handleChange}
-          
         />
+        <p> {formErrors.username} </p>
         <label>Email</label>
         <input
           type="text"
@@ -68,6 +73,7 @@ const handleClick = async e => {
           name="email"  
           onChange={handleChange}
         />
+        <p> {formErrors.email} </p>
         <label>Password</label>
         <input
           type="password"
@@ -76,13 +82,16 @@ const handleClick = async e => {
           name="password"  
           onChange={handleChange}
         />
+        <p> {formErrors.password} </p>
         <label>Confirm Password</label>
         <input
           type="password"
           className="registerInput"
           placeholder="Confirm your password..."
+          name="confirmPassword"  
+          onChange={handleChange}
         />
-      {err && err}
+        <p> {formErrors.confirmPassword} </p>
         <button className="registerButton" onClick={handleClick}>
           Register
         </button>
