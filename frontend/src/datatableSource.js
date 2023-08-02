@@ -28,10 +28,11 @@ export const userColumns = [
     field: "status",
     headerName: "Form status",
     width: 160,
+
     renderCell: (params) => {
       return (
-        <div className={`cellWithStatus ${params.row.status}`}>
-          {params.row.status}
+        <div className={`cellWithStatus ${params.row.formStatus}`}>
+          {params.row.formStatus}
         </div>
       );
     },

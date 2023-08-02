@@ -6,6 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useContext } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Import internal modules
 import "./style.css";
@@ -19,20 +20,25 @@ import { AuthContext } from "../src/context/authContext";
 import Navbar from "./components/navbar/Navbar.jsx";
 import Sidebar from "./components/sidebar/Sidebar.jsx";
 
+// Create a client
+const queryClient = new QueryClient();
+
 function App() {
   // This propertie Allow us to use reusable components
   // Return Outlet from react-router-dom
   const Layout = () => {
     return (
-      <div>
-        <Navbar />
-        <div style={{ display: "flex" }}>
-          <Sidebar />
-          <div style={{ flex: 6 }}>
-            <Outlet />
+      <QueryClientProvider client={queryClient}>
+        <div>
+          <Navbar />
+          <div style={{ display: "flex" }}>
+            <Sidebar />
+            <div style={{ flex: 6 }}>
+              <Outlet />
+            </div>
           </div>
         </div>
-      </div>
+      </QueryClientProvider>
     );
   };
 
